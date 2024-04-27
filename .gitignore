@@ -10,6 +10,8 @@ code/.idea
 *.zip
 code/output
 code/saved_models
+code/data/CBIS-DDSM/images_original
+code/data/CBIS-DDSM/images_processed
 
 # ______________________________________________________________________________________________________________________
 
