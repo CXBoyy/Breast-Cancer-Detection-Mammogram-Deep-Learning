@@ -116,7 +116,7 @@ class CnnModel:
         :return: None
         """
         if config.dataset == "CBIS-DDSM" or config.dataset == "mini-MIAS-binary":
-            self._model.compile(optimizer=Adam(learning_rate),
+            self._model.compile(optimizer="adam",
                                 loss=BinaryCrossentropy(),
                                 metrics=[BinaryAccuracy()])
         elif config.dataset == "mini-MIAS":

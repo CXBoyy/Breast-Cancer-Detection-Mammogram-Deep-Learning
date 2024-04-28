@@ -23,9 +23,9 @@ def main() -> None:
     
     :return: None
     """
-    csv_root = '../data/CBIS-DDSM/ori_csv'      # original csv folder
-    img_root = '/cs/tmp/datasets/CBIS-DDSM'     # dataset folder
-    csv_output_path = '../data/CBIS-DDSM-mask'       # csv output folder
+    csv_root = '/Code/KEX-Job/Breast-Cancer-Detection-Mammogram-Deep-Learning/code/data/CBIS-DDSM/ori_csv'      # original csv folder
+    img_root = '/Code/KEX-Job/Breast-Cancer-Detection-Mammogram-Deep-Learning/code/data/CBIS-DDSM/images_original/CBIS-DDSM'     # dataset folder
+    csv_output_path = '/Code/KEX-Job/Breast-Cancer-Detection-Mammogram-Deep-Learning/code/data/CBIS-DDSM-mask'       # csv output folder
 
     folders = os.listdir(img_root)
 
