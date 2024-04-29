@@ -16,7 +16,7 @@ def generate_csv_report(y_true_inv, y_pred_inv, label_encoder, accuracy) -> None
                                                    output_dict=True)).transpose()
 
     # Append accuracy.
-    report_df.append({'accuracy': accuracy}, ignore_index=True)
+    report_df._append({'accuracy': accuracy}, ignore_index=True)
 
     # Save report.
     report_df.to_csv(

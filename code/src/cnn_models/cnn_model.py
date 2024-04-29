@@ -7,7 +7,8 @@ from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras.losses import BinaryCrossentropy, CategoricalCrossentropy, SparseCategoricalCrossentropy
 from tensorflow.keras.metrics import BinaryAccuracy, CategoricalAccuracy, SparseCategoricalAccuracy
 from tensorflow.keras.optimizers import Adam
-from tensorflow.python.keras.callbacks import EarlyStopping, ReduceLROnPlateau
+from tensorflow.keras.optimizers import SGD
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 
 import config
 from cnn_models.basic_cnn import create_basic_cnn_model
@@ -116,7 +117,7 @@ class CnnModel:
         :return: None
         """
         if config.dataset == "CBIS-DDSM" or config.dataset == "mini-MIAS-binary":
-            self._model.compile(optimizer="adam",
+            self._model.compile(optimizer=SGD(learning_rate),
                                 loss=BinaryCrossentropy(),
                                 metrics=[BinaryAccuracy()])
         elif config.dataset == "mini-MIAS":
@@ -263,7 +264,7 @@ class CnnModel:
         """
         # Scratch space
         self._model.save(
-            "/../../saved_models/dataset-{}_mammogramtype-{}_model-{}_lr-{}_b-{}_e1-{}_e2-{}_roi-{}_{}_saved-model.h5".format(
+            "../saved_models/dataset-{}_mammogramtype-{}_model-{}_lr-{}_b-{}_e1-{}_e2-{}_roi-{}_{}_saved-model.h5".format(
                 config.dataset,
                 config.mammogram_type,
                 config.model,
@@ -283,7 +284,7 @@ class CnnModel:
         if self.model_name == "VGG-common" or self.model_name == "MobileNet":
             print("Saving all weights")
             self._model.save_weights(
-                "/../../saved_models/dataset-{}_mammogramtype-{}_model-{}_lr-{}_b-{}_e1-{}_e2-{}_roi-{}_{}_all_weights.h5".format(
+                "../saved_models/dataset-{}_mammogramtype-{}_model-{}_lr-{}_b-{}_e1-{}_e2-{}_roi-{}_{}_all_weights.h5".format(
                     config.dataset,
                     config.mammogram_type,
                     config.model,
@@ -296,8 +297,11 @@ class CnnModel:
             )
             print("Saving {} layer weights".format(self._model.layers[2].name))
             weights_and_biases = self._model.layers[2].get_weights()
+            print(len(weights_and_biases))
+            print("\nWeights: ", weights_and_biases)
+            weights_and_biases_dict = {str(i): weight for i, weight in enumerate(weights_and_biases)}
             np.save(
-                "/../../saved_models/dataset-{}_mammogramtype-{}_model-{}_lr-{}_b-{}_e1-{}_e2-{}_roi-{}_{}_fc_weights.npy".format(
+                "../saved_models/dataset-{}_mammogramtype-{}_model-{}_lr-{}_b-{}_e1-{}_e2-{}_roi-{}_{}_fc_weights.npy".format(
                     config.dataset,
                     config.mammogram_type,
                     config.model,
@@ -307,7 +311,7 @@ class CnnModel:
                     config.max_epoch_unfrozen,
                     config.is_roi,
                     config.name),
-                weights_and_biases
+                weights_and_biases_dict
             )
 
     def load_minimias_weights(self) -> None:
@@ -317,7 +321,7 @@ class CnnModel:
         """
         print("Loading all layers mini-MIAS-binary weights from h5 file.")
         self._model.load_weights(
-            "/../../saved_models/dataset-mini-MIAS-binary_mammogramtype-all_model-MobileNet_lr-0.0001_b-2_e1-150_e2-50_roi-False__all_weights.h5"
+            "../saved_models/dataset-mini-MIAS-binary_mammogramtype-all_model-MobileNet_lr-0.0001_b-2_e1-150_e2-50_roi-False__all_weights.h5"
         )
         # self._model.load_weights(
         #     "/cs/scratch/agj6/saved_models/dataset-{}_mammogramtype-{}_model-{}_lr-{}_b-{}_e1-{}_e2-{}_roi-{}_{}_all_weights.h5".format(
@@ -339,7 +343,7 @@ class CnnModel:
         """
         print("Loading only FC layers mini-MIAS-binary weights from npy file.")
         weights = np.load(
-            "/../../saved_models/dataset-mini-MIAS-binary_mammogramtype-all_model-MobileNet_lr-0.0001_b-2_e1-150_e2-50_roi-False__fc_weights.npy"
+            "../saved_models/dataset-mini-MIAS-binary_mammogramtype-all_model-MobileNet_lr-0.0001_b-2_e1-150_e2-50_roi-False__fc_weights.npy"
         )
         # weights = np.load(
         #     "/cs/scratch/agj6/saved_models/dataset-{}_mammogramtype-{}_model-{}_lr-{}_b-{}_e1-{}_e2-{}_roi-{}_{}_fc_weights.npy".format(

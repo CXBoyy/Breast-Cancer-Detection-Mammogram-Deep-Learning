@@ -29,12 +29,18 @@ def merge_csv(path):
     csv2 = pd.read_csv(path + "mass-training.csv")
     df = pd.concat([csv1, csv2])
     df.to_csv(path + "training.csv")
+
+def make_smaller_csv(folderPath, filePath, file_name):
+    df = pd.read_csv(folderPath + filePath)
+    df = df.drop(list(range(0, 2400, 1)), axis=0)
+    df.to_csv(folderPath + file_name)
     
 def main():
     """ for path in paths:
         change_img_path(path, target_path) """
     for path in paths:
         merge_csv(path)
+        make_smaller_csv(path, "training.csv", "trainingSmaller.csv")
         
 if __name__ == "__main__":
     main()
